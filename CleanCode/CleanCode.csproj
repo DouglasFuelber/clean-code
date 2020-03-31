@@ -56,6 +56,8 @@
     <Compile Include="LongMethods\Example1.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="LongMethods\DataTableToCsvMapper.cs" />
+    <Compile Include="LongMethods\TableReader.cs" />
     <Compile Include="MagicNumbers\MagicNumbers.cs" />
     <Compile Include="LongParameterList\LongParameterList.cs" />
     <Compile Include="Names\Names.cs" />

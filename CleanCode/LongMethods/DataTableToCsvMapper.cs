@@ -1,77 +1,73 @@
-using System;
-using System.Configuration;
+﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 
-namespace FooFoo
+namespace CleanCode.LongMethods
 {
     public class DataTableToCsvMapper
     {
-        public System.IO.MemoryStream Map(DataTable dataTable)
+        public MemoryStream Map(DataTable dataTable)
         {
             MemoryStream ReturnStream = new MemoryStream();
 
-            StreamWriter sw = new StreamWriter(ReturnStream);
-            WriteColumnNames(dataTable, sw);
-            WriteRows(dataTable, sw);
-            sw.Flush();
-            sw.Close();
+            StreamWriter streamWriter = new StreamWriter(ReturnStream);
+            WriteColumnNames(dataTable, streamWriter);
+            WriteRows(dataTable, streamWriter);
+            streamWriter.Flush();
+            streamWriter.Close();
 
             return ReturnStream;
         }
 
-        private static void WriteRows(DataTable dt, StreamWriter sw)
+        private static void WriteRows(DataTable dataTable, StreamWriter streamWriter)
         {
-            foreach (DataRow dr in dt.Rows)
+            foreach (DataRow dataRow in dataTable.Rows)
             {
-                WriteRow(dt, dr, sw);
-                sw.WriteLine();
+                WriteRow(dataTable, dataRow, streamWriter);
+                streamWriter.WriteLine();
             }
         }
 
-        private static void WriteRow(DataTable dt, DataRow dr, StreamWriter sw)
+        private static void WriteRow(DataTable dataTable, DataRow dataRow, StreamWriter streamWriter)
         {
-            for (int i = 0; i < dt.Columns.Count; i++)
+            for (int i = 0; i < dataTable.Columns.Count; i++)
             {
-                WriteCell(dr, i, sw);
-
-                WriteSeperatorIfRequired(dt, i, sw);
+                WriteCell(dataRow[i], streamWriter);
+                WriteSeparatorIfRequired(dataTable, i, streamWriter);
             }
         }
 
-        private static void WriteSeperatorIfRequired(DataTable dt, int i, StreamWriter sw)
+        private static void WriteSeparatorIfRequired(DataTable dataTable, int i, StreamWriter streamWriter)
         {
-            if (i < dt.Columns.Count - 1)
-            {
-                sw.Write(",");
-            }
+            if (i < dataTable.Columns.Count - 1)
+                streamWriter.Write(",");
         }
 
-        private static void WriteCell(DataRow dr, int i, StreamWriter sw)
+        private static void WriteCell(object dataRow, StreamWriter streamWriter)
         {
-            if (!Convert.IsDBNull(dr[i]))
+            if (!Convert.IsDBNull(dataRow))
             {
-                string str = String.Format("\"{0:c}\"", dr[i].ToString()).Replace("\r\n", " ");
-                sw.Write(str);
+                string str = String.Format("\"{0:c}\"", dataRow.ToString()).Replace("\r\n", " ");
+                streamWriter.Write(str);
             }
             else
             {
-                sw.Write("");
+                streamWriter.Write("");
             }
         }
 
-        private static void WriteColumnNames(DataTable dt, StreamWriter sw)
+        private static void WriteColumnNames(DataTable dataTable, StreamWriter streamWriter)
         {
-            for (int i = 0; i < dt.Columns.Count; i++)
+            for (int i = 0; i < dataTable.Columns.Count; i++)
             {
-                sw.Write(dt.Columns[i]);
-                if (i < dt.Columns.Count - 1)
+                streamWriter.Write(dataTable.Columns[i]);
+                if (i < dataTable.Columns.Count - 1)
                 {
-                    sw.Write(",");
+                    streamWriter.Write(",");
                 }
             }
-            sw.WriteLine();
+            streamWriter.WriteLine();
         }
     }
 }
+
