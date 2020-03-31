@@ -1,13 +1,12 @@
-using System.Linq;
+﻿using System.Linq;
 
-namespace CleanCode.FullRefactoring
+namespace Project.FullRefactoring
 {
     public class PostRepository
     {
         private readonly PostDbContext _dbContext;
 
-        public PostRepository()
-        {
+        public PostRepository() {
             _dbContext = new PostDbContext();
         }
 
@@ -23,4 +22,3 @@ namespace CleanCode.FullRefactoring
         }
     }
 }
-
